@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="AlertDialogTestSuite">
+    <test name="AlertDialogTest">
+        <groups>
+            <run>
+                <include name="AlertDialogTest"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testcases.BcCannabisStoresPageTest"/>
+        </classes>
+    </test>
+</suite>

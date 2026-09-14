@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SmokeTestSuite">
+    <test name="SmokeTest">
+        <groups>
+            <run>
+                <include name="Smoke"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="testcases" />
+        </packages>
+        <classes>
+            <class name="testcases.BaseTest"></class>
+            <class name="testcases.HomePageTest"/>
+            <class name="testcases.BcCannabisStoresPageTest"/>
+            <class name="testcases.AboutPageTest"></class>
+        </classes>
+    </test>
+</suite>
