@@ -3,8 +3,6 @@ package testcases;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
-import pages.HomePage;
-
 import java.time.Duration;
 
 
@@ -14,7 +12,7 @@ public class BaseTest {
 
 
         @BeforeMethod(alwaysRun = true)
-        public void setUp() {
+        protected void setUp() {
             // Initialize the driver instance
             driver = new ChromeDriver();
             driver.manage().window().maximize();
@@ -22,13 +20,13 @@ public class BaseTest {
         }
 
         @AfterMethod(alwaysRun = true)
-        public void tearDown() {
+        protected void tearDown() {
             if (driver != null) {
                 driver.quit();
             }
         }
 
-        public void threadSleep(int seconds){
+        protected void threadSleep(int seconds){
             try {
                 System.out.println(seconds + " seconds wait!");
                 Thread.sleep(Duration.ofSeconds(seconds));

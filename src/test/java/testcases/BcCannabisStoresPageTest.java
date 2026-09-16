@@ -38,8 +38,8 @@ public class BcCannabisStoresPageTest extends BaseTest {
         cannabisStoresPage.selectDeclineButton();
         threadSleep(3);
 
-        Assert.assertTrue(cannabisStoresPage.isAlertDialogStillShowing(),
-                "Alert Dialog should be be displaying any more");
+        Assert.assertFalse(cannabisStoresPage.isAlertDialogStillShowing(),
+                "Alert Dialog should not be displaying any more");
     }
 
     @Test(groups = {"Regression", "AlertDialogTest"})
@@ -78,10 +78,10 @@ public class BcCannabisStoresPageTest extends BaseTest {
         cannabisStoresPage.selectSaveButton();
         threadSleep(3);
 
-        Assert.assertTrue(cannabisStoresPage.isPrefsDialogStillShowing(),
-                "Prefs Dialog should be be displaying any more");
-        Assert.assertTrue(cannabisStoresPage.isAlertDialogStillShowing(),
-                "Alert Dialog should be be displaying any more");
+        Assert.assertFalse(cannabisStoresPage.isPrefsDialogStillShowing(),
+                "Prefs Dialog should not be displaying any more");
+        Assert.assertFalse(cannabisStoresPage.isAlertDialogStillShowing(),
+                "Alert Dialog should not be displaying any more");
     }
 
     @Test(groups = {"Regression", "ErrorMessagesTest"})

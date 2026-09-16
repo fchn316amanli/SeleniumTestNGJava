@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.pagefactory.ByChained;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testcases.BaseTest;
 
 
 import java.sql.Array;
@@ -18,8 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AboutPage {
+public class AboutPage extends BasePage {
 
+    /*
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -27,7 +29,12 @@ public class AboutPage {
     // Initialize driver and wait in the constructor
     public AboutPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        //this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    }
+    */
+
+    public AboutPage(WebDriver driver) {
+        super(driver); // Chains the driver instance up to BasePage
     }
 
     //iFrame from https://www.bcldb.com/about/about-ldb
@@ -51,25 +58,9 @@ public class AboutPage {
 
 
     // Page Actions
-    //ToDo: move to utility extensions?
-    public void threadSleep(int seconds){
-        try {
-            System.out.println(seconds + " seconds wait!");
-            Thread.sleep(Duration.ofSeconds(seconds));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    private void javaScriptExecutorScrollToViewTrue(WebElement el){
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        //move to screen
-        executor.executeScript("arguments[0].scrollIntoView(true);",el );
-    }
-
     public void moveToVideoIFrame(By byIframe){
         // Wait up to 30 seconds for the element to be present in the DOM
-        WebElement videoIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(byIframe));
+        WebElement videoIFrame = waitForElementToBeVisible(byIframe);
         //move to screen
         javaScriptExecutorScrollToViewTrue(videoIFrame);
     }
@@ -78,7 +69,7 @@ public class AboutPage {
         // Declare a map (Key: String, Value: String)
         Map<String, String> videoSrcTitle = new HashMap<>();
 
-        WebElement videoIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(byIframe));
+        WebElement videoIFrame = waitForElementToBeVisible(byIframe);
         //No need to switch to the frame driver,
         //because the src attribute exists directly on the <iframe> tag in the main HTML DOM
         String videoSrc = videoIFrame.getAttribute("src");
@@ -96,11 +87,11 @@ public class AboutPage {
         // Declare a map (Key: String, Value: String)
         Map<String, Double> videoStatusData = new HashMap<>();
         // 1. Wait for iFrame visible
-        WebElement videoIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(byIframe));
+        WebElement videoIFrame = waitForElementToBeVisible(byIframe);
         // 2. Switch the driver's focus into the iFrame
         driver.switchTo().frame(videoIFrame);
         // 3. Locate the HTML5 <video> element inside the iFrame
-        WebElement videoEl = wait.until(ExpectedConditions.elementToBeClickable(byVideo));
+        WebElement videoEl = waitForElementToBeClickable(byVideo);
         // 4. Initialize JavascriptExecutor
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         // 5. Let the video play for a moment, then grab the initial time
@@ -122,11 +113,11 @@ public class AboutPage {
 
     public boolean getPlayStatusOfVideo(By byIframe, By byVideo) {
         // 1. Wait for iFrame visible
-        WebElement videoIFrame = (WebElement) wait.until(ExpectedConditions.visibilityOfElementLocated(byIframe));
+        WebElement videoIFrame = (WebElement) waitForElementToBeVisible(byIframe);
         // 2. Switch the driver's focus into the iFrame
         driver.switchTo().frame(videoIFrame);
         // 3. Locate the HTML5 <video> element inside the iFrame
-        WebElement videoEl = wait.until(ExpectedConditions.elementToBeClickable(byVideo));
+        WebElement videoEl = waitForElementToBeClickable(byVideo);
         // 4. Initialize JavascriptExecutor
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         // 5. Get video status
@@ -139,13 +130,13 @@ public class AboutPage {
     }
 
     public void playPauseVideo(By byIframe, By byVideo) {
-        WebElement videoIFrame = (WebElement) wait.until(ExpectedConditions.visibilityOfElementLocated(byIframe));
+        WebElement videoIFrame = (WebElement) waitForElementToBeVisible(byIframe);
         // 1. Switch to the iFrame
         driver.switchTo().frame(videoIFrame);
         // 2. Instantiate the Actions class by passing the WebDriver instance
         Actions actions = new Actions(driver);
         // 3. get the UI el, handle a mouse over (hover) and click action
-        WebElement videoEl = wait.until(ExpectedConditions.elementToBeClickable(byVideo));
+        WebElement videoEl = waitForElementToBeClickable(byVideo);
         actions.moveToElement(videoEl).click().perform();
         // 4. Switch back the driver from iFrame to page
         driver.switchTo().defaultContent();
@@ -155,13 +146,13 @@ public class AboutPage {
         // Declare a map (Key: String, Value: String)
         Map<String, String> popupBoxTexts = new HashMap<>();
 
-        WebElement videoIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(cannabisVideoIFrame));
+        WebElement videoIFrame = waitForElementToBeVisible(cannabisVideoIFrame);
         //Switch to the frame
         driver.switchTo().frame(videoIFrame);
-        String titleTxt = wait.until(ExpectedConditions.visibilityOfElementLocated(popupTitle)).getText();
-        String descriptionTxt = wait.until(ExpectedConditions.visibilityOfElementLocated(popupDescription)).getText();
-        String checkBoxTxt = wait.until(ExpectedConditions.visibilityOfElementLocated(checkboxInputTxt)).getText();
-        String proceedBtnTxt = wait.until(ExpectedConditions.visibilityOfElementLocated(proceedBtn)).getText();
+        String titleTxt = waitForElementToBeVisible(popupTitle).getText();
+        String descriptionTxt = waitForElementToBeVisible(popupDescription).getText();
+        String checkBoxTxt = waitForElementToBeVisible(checkboxInputTxt).getText();
+        String proceedBtnTxt = waitForElementToBeVisible(proceedBtn).getText();
 
         System.out.println("titleTxt---" + titleTxt);
         System.out.println("descriptionTxt---" + descriptionTxt);
@@ -178,12 +169,12 @@ public class AboutPage {
     }
 
     public void confirmProceedCannabisVideo() {
-        WebElement videoIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(cannabisVideoIFrame));
+        WebElement videoIFrame = waitForElementToBeVisible(cannabisVideoIFrame);
         //Switch to the frame
         driver.switchTo().frame(videoIFrame);
-        WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(checkboxInput));
+        WebElement checkbox = waitForElementToBeClickable(checkboxInput);
         // before select the checkbox, this el is NOT clickable
-        WebElement confirmProceedBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(proceedBtn));
+        WebElement confirmProceedBtn = waitForElementToBeVisible(proceedBtn);
         if (!checkbox.isSelected()) {
             checkbox.click();
             confirmProceedBtn.click();
@@ -195,7 +186,7 @@ public class AboutPage {
     }
 
     public void selectMultiplyTheGoodLink(){
-        WebElement el = wait.until(ExpectedConditions.elementToBeClickable(multiplyGoodLnk));
+        WebElement el = waitForElementToBeClickable(multiplyGoodLnk);
         //move to screen
         javaScriptExecutorScrollToViewTrue(el);
         el.click();

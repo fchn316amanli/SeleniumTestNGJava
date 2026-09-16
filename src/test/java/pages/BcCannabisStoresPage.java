@@ -15,8 +15,8 @@ import java.util.Map;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
-public class BcCannabisStoresPage {
-
+public class BcCannabisStoresPage extends BasePage {
+    /*
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -25,6 +25,11 @@ public class BcCannabisStoresPage {
     public BcCannabisStoresPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    }
+    */
+
+    public BcCannabisStoresPage(WebDriver driver) {
+        super(driver); // Chains the driver instance up to BasePage
     }
 
     // Alert Dialog, need to dismiss in the beginning
@@ -61,34 +66,34 @@ public class BcCannabisStoresPage {
     public void inputAge(String month, int day, int year){
         //ToDo: error handling
 
-        WebElement ddlEl = wait.until(ExpectedConditions.visibilityOfElementLocated(ageGateMonthSelect));
+        WebElement ddlEl = waitForElementToBeVisible(ageGateMonthSelect);
         Select ddl = new Select(ddlEl);
         ddl.selectByVisibleText(month);
 
-        WebElement dayInputEl = wait.until(ExpectedConditions.visibilityOfElementLocated(ageGateDayInput));
+        WebElement dayInputEl = waitForElementToBeVisible(ageGateDayInput);
         dayInputEl.sendKeys(Integer.toString(day));
-        WebElement yearInputEl = wait.until(ExpectedConditions.visibilityOfElementLocated(ageGateYearInput));
+        WebElement yearInputEl = waitForElementToBeVisible(ageGateYearInput);
         yearInputEl.sendKeys(Integer.toString(year));
     }
 
     public String getErrorMessageOfAgeGate(){
-        WebElement errEl = wait.until(ExpectedConditions.visibilityOfElementLocated(ageGateErrMessage));
+        WebElement errEl = waitForElementToBeVisible(ageGateErrMessage);
         return errEl.getText();
     }
 
     public void selectConfirmAgeProceedButton(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ageGateBtnProceed)).click();
+        waitForElementToBeVisible(ageGateBtnProceed).click();
     }
 
     public String getLogoImageSource(){
-        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(siteLogo));
+        WebElement el = waitForElementToBeVisible(siteLogo);
         String actualLogoSrc = el.getAttribute("src");
         return actualLogoSrc;
     }
 
     public boolean isShoppingCartShowing(){
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(shoppingCartIcon));
+            waitForElementToBeVisible(shoppingCartIcon);
             return true;
         } catch (Exception e) {
             return false;
@@ -107,8 +112,8 @@ public class BcCannabisStoresPage {
     }
 
     public Map<String, String> getHeaderAndParaTextOfAlertDialog(){
-        WebElement h = wait.until(ExpectedConditions.visibilityOfElementLocated(alertDlgH));
-        WebElement p = wait.until(ExpectedConditions.visibilityOfElementLocated(alertDlgP));
+        WebElement h = waitForElementToBeVisible(alertDlgH);
+        WebElement p = waitForElementToBeVisible(alertDlgP);
 
         Map<String, String> txtMap = new HashMap<>();
         txtMap = setupMapDataOfElements(h, p);
@@ -116,11 +121,11 @@ public class BcCannabisStoresPage {
     }
 
     public void selectManagePreferencesButton(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(alertDlgBtnMgmPrefs)).click();
+        waitForElementToBeVisible(alertDlgBtnMgmPrefs).click();
     }
 
     public void selectDeclineButton(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(alertDlgBtnDecline)).click();
+        waitForElementToBeVisible(alertDlgBtnDecline).click();
     }
 
     public Map<String, String> getHeaderAndParaTextOfPrefsIntro(){
@@ -146,24 +151,24 @@ public class BcCannabisStoresPage {
     }
 
     public void selectPrefsOptionP(){
-        wait.until(ExpectedConditions.elementToBeClickable(prefsDlgOptionP)).click();
+        waitForElementToBeClickable(prefsDlgOptionP).click();
     }
 
     public void selectPrefsOptionM(){
-        wait.until(ExpectedConditions.elementToBeClickable(prefsDlgOptionM)).click();
+        waitForElementToBeClickable(prefsDlgOptionM).click();
     }
 
     public void selectPrefsOptionA(){
-        wait.until(ExpectedConditions.elementToBeClickable(prefsDlgOptionA)).click();
+        waitForElementToBeClickable(prefsDlgOptionA).click();
     }
 
     public void selectSaveButton(){
-        wait.until(ExpectedConditions.elementToBeClickable(prefsDlgBtnSave)).click();
+        waitForElementToBeClickable(prefsDlgBtnSave).click();
     }
 
     public boolean isPrefsDialogStillShowing(){
         try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(prefsDlg));
+            waitForElementToBeVisible(prefsDlg);
             return true;
         } catch (Exception e) {
             return false;
@@ -172,7 +177,7 @@ public class BcCannabisStoresPage {
 
     public boolean isAlertDialogStillShowing(){
         try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(alertDlg));
+            waitForElementToBeVisible(alertDlg);
             return true;
         } catch (Exception e) {
             return false;

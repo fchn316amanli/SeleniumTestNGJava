@@ -12,8 +12,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage {
-
+public class HomePage extends BasePage {
+        /*
         private WebDriver driver;
         private WebDriverWait wait;
 
@@ -22,6 +22,11 @@ public class HomePage {
         public HomePage(WebDriver driver) {
                 this.driver = driver;
                 this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        }
+        */
+
+        public HomePage(WebDriver driver) {
+                super(driver); // Chains the driver instance up to BasePage
         }
 
         // Keep locators private to prevent Test Class exposure
@@ -64,33 +69,33 @@ public class HomePage {
 
         // Page Actions
         public String getLogoImageSource(){
-                WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(logoImg));
+                WebElement el = waitForElementToBeVisible(logoImg);
                 String actualLogoSrc = el.getAttribute("src");
                 return actualLogoSrc;
         }
 
         //ToDo: may remove
         public void selectDoingBizLink(){
-                WebElement el = wait.until(ExpectedConditions.elementToBeClickable(BizLiquorLnk));
+                WebElement el = waitForElementToBeClickable(BizLiquorLnk);
                 el.click();
         }
 
         public AboutPage selectAboutLink(){
-                WebElement el = wait.until(ExpectedConditions.elementToBeClickable(AboutLnk));
+                WebElement el = waitForElementToBeClickable(AboutLnk);
                 el.click();
                 return new AboutPage(driver);
         }
 
         //ToDo: may remove
         public void selectDoingBizCannabisLink(){
-                WebElement el = wait.until(ExpectedConditions.elementToBeClickable(BizCannabisLnk));
+                WebElement el = waitForElementToBeClickable(BizCannabisLnk);
                 el.click();
         }
 
         public int getSwiperSlidesCount(){
                 //get error of waiting all slides
                 //List<WebElement> els = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(swiperSlides));
-                wait.until(ExpectedConditions.visibilityOfElementLocated(swiper));
+                waitForElementToBeVisible(swiper);
                 List<WebElement> els = driver.findElements(swiperSlides);
                 int slidesCount = els.size();
                 System.out.println("slidesCount---"+ slidesCount);
@@ -133,7 +138,7 @@ public class HomePage {
         }
 
         public void clickSwiperPlayPauseButton(){
-                WebElement el = wait.until(ExpectedConditions.elementToBeClickable(swiperPlayPauseBtn));
+                WebElement el = waitForElementToBeClickable(swiperPlayPauseBtn);
                 el.click();
         }
 
@@ -141,9 +146,9 @@ public class HomePage {
                 WebElement nextOrPreviousBtn = null;
 
                 if (nextOrPrevious == "Next") {
-                        nextOrPreviousBtn = wait.until(ExpectedConditions.elementToBeClickable(swiperNextBtn));
+                        nextOrPreviousBtn = waitForElementToBeClickable(swiperNextBtn);
                 } else if (nextOrPrevious == "Previous") {
-                        nextOrPreviousBtn = wait.until(ExpectedConditions.elementToBeClickable(swiperPrevBtn));
+                        nextOrPreviousBtn = waitForElementToBeClickable(swiperPrevBtn);
                 } else {
                         throw new IllegalArgumentException("The input string of NextOrPrevious button is wrong");
                 }
@@ -151,13 +156,13 @@ public class HomePage {
         }
 
         public String getActiveSlideCaptionTitle(){
-                WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(activeSlide));
+                WebElement el = waitForElementToBeVisible(activeSlide);
                 String activeSlideCaptionTitle = el.findElement(slideCaption).findElement(slideCaptionTitle).getText();
                 return activeSlideCaptionTitle;
         }
 
         public String getUnderBannerText(){
-                WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(underBannerLbl));
+                WebElement el = waitForElementToBeVisible(underBannerLbl);
                 String actualUnderBannerText = el.getText();
                 return actualUnderBannerText;
         }
@@ -187,14 +192,6 @@ public class HomePage {
 
         public void selectRetailsViewLink(){
                 getViewLinkElement(0).findElement(highlightTxtH).click();
-        }
-
-        private void javaScriptExecutorScrollToViewCenterAndClick(WebElement el){
-                JavascriptExecutor executor = (JavascriptExecutor) driver;
-                //move to screen
-                executor.executeScript("arguments[0].scrollIntoView({block: 'center'});",el );
-                // Bypasses Selenium's cursor restrictions and forces a click
-                executor.executeScript("arguments[0].click();", el );
         }
 
         public BcLiquorStoresPage selectBcLiquorStoresFooterLink(){
