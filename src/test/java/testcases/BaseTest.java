@@ -16,7 +16,6 @@ public class BaseTest {
             // Initialize the driver instance
             driver = new ChromeDriver();
             driver.manage().window().maximize();
-            //driver.navigate().to("https://www.bcldb.com/");
         }
 
         @AfterMethod(alwaysRun = true)

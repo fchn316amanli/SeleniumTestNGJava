@@ -2,12 +2,15 @@ package testcases;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import java.lang.reflect.Method;
 import pages.BcCannabisStoresPage;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 public class BcCannabisStoresPageTest extends BaseTest {
 
@@ -84,12 +87,12 @@ public class BcCannabisStoresPageTest extends BaseTest {
                 "Alert Dialog should not be displaying any more");
     }
 
-    @Test(groups = {"Regression", "ErrorMessagesTest"})
-    public void testInputYoungAgeError(){
+    @Test(groups = {"Regression", "ErrorMessagesTest"}, dataProvider = "ageData")
+    public void testInputYoungAgeError(String month, int day,int year){
         //Dismiss the alert dialog to proceed the main page
         cannabisStoresPage.selectDeclineButton();
         // Input a young age
-        cannabisStoresPage.inputAge("August", 13, 2010);
+        cannabisStoresPage.inputAge(month, day, year);
         threadSleep(5);
         String errorMessageAgeGate = cannabisStoresPage.getErrorMessageOfAgeGate();
         Assert.assertTrue(errorMessageAgeGate.contains(
@@ -103,12 +106,31 @@ public class BcCannabisStoresPageTest extends BaseTest {
                 "Age gate error message is wrong");
     }
 
-    @Test(groups = {"Regression"})
-    public void testInputLegalAgeProceed(){
+    //return two-dimensional Object array (Object[][]).
+    // Each row in this array represents a separate test execution,
+    // and each element corresponds to a parameter in the test method.
+    @DataProvider(name = "ageData")
+    public Object[][] getAgeData(Method method) {
+        // Dynamic Data Selection (Method Runtime Check)
+        // Manipulate returned data conditionally based on which method calls it
+        if (method.getName().equalsIgnoreCase("testInputLegalAgeProceed")) {
+            return new Object[][]{//>=19 years old
+                    {"January", 23, 1928},//old age
+                    {"January", 1, 1985},//middle
+                    {"September", 16, 2007}//edge case, young
+            };
+        } else {
+            return new Object[][] { {"October", 13, 2010} };
+        }
+    }
+
+    //Happy path with different adult ages
+    @Test(groups = {"Regression"}, dataProvider = "ageData")
+    public void testInputLegalAgeProceed(String month, int day,int year){
         //Dismiss the alert dialog to proceed the main page
         cannabisStoresPage.selectDeclineButton();
-        // Input a young age
-        cannabisStoresPage.inputAge("January", 23, 2000);
+        // Input an age
+        cannabisStoresPage.inputAge(month, day, year);
         threadSleep(5);
         cannabisStoresPage.selectConfirmAgeProceedButton();
         threadSleep(5);
