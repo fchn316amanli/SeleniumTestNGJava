@@ -13,6 +13,7 @@
             <class name="testcases.BaseTest"></class>
             <class name="testcases.HomePageTest"/>
             <class name="testcases.BcCannabisStoresPageTest"/>
+            <class name="testcases.BcLiquorStoresPageTest"/>
             <class name="testcases.AboutPageTest"></class>
         </classes>
     </test>

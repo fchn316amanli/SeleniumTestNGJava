@@ -16,6 +16,9 @@ public class BasePage {
     // Constructor accepts driver passed from the test script
     // Initialize driver and wait in the constructor
     public BasePage(WebDriver driver) {
+        if (driver == null) {
+            throw new IllegalArgumentException("Driver must be set and cannot be null!");
+        }
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
